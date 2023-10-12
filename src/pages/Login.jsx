@@ -4,9 +4,12 @@ import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import Spinner from "../components/Spinner";
 
 const Login = () => {
   const navigate = useNavigate();
+  const [spinner, setSpinner] = useState(false);
 
   return (
     <Container sx={{ marginTop: "50px" }}>
@@ -57,7 +60,13 @@ const Login = () => {
           }}
         >
           <Button
-            onClick={() => navigate("/admin")}
+            onClick={() => {
+              setSpinner(true);
+              setTimeout(() => {
+                setSpinner(false);
+                navigate("/admin");
+              }, 2000);
+            }}
             variant="contained"
             sx={{
               backgroundColor: "#001952",
@@ -67,6 +76,7 @@ const Login = () => {
             Iniciar Sesión
           </Button>
         </div>
+        <Spinner spinnerToggle={spinner} />
       </Box>
     </Container>
   );

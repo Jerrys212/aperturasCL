@@ -7,6 +7,7 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Header = () => {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -18,6 +19,8 @@ const Header = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const navigate = useNavigate();
 
   return (
     <AppBar
@@ -40,9 +43,14 @@ const Header = () => {
                 fontWeight: "bold",
               }}
             >
-              Aperturas México
+              Aperturas Chile
             </Typography>
-            <Button onClick={handleMenuClick} sx={{ color: "white" }}>
+            <Button
+              onClick={handleMenuClick}
+              aria-controls="menu"
+              aria-haspopup="true"
+              sx={{ color: "white" }}
+            >
               <MoreVertIcon />
             </Button>
             <Menu
@@ -51,7 +59,7 @@ const Header = () => {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-              <MenuItem onClick={handleClose}>Cerrar Sesión</MenuItem>
+              <MenuItem onClick={() => navigate("/")}>Cerrar Sesión</MenuItem>
             </Menu>
           </div>
         </Toolbar>

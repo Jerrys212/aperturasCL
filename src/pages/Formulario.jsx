@@ -12,6 +12,8 @@ import Grid from "@mui/material/Grid";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import Button from "@mui/material/Button";
 import Box from "@mui/material/Box";
+import Snack from "../components/Snack";
+import Checkbox from "@mui/material/Checkbox";
 
 const Formulario = () => {
   const [datosGenerales, setDatosGenerales] = useState({
@@ -24,13 +26,23 @@ const Formulario = () => {
   });
 
   const [direccion, setDireccion] = useState({
-    cp: "",
-    calle: "",
-    ciudad: "",
-    estado: "",
-    municipio: "",
-    colonia: "",
+    rut: "",
+    region: "",
+    comina: "",
+    avca: "",
   });
+
+  const [snack, setSnack] = useState(false);
+  const [usarRutGenerico, setUsarRutGenerico] = useState(false);
+
+  const handleUsarRutGenerico = () => {
+    if (usarRutGenerico) {
+      setDireccion({ ...direccion, rut: "99.999.999-K" });
+    } else {
+      setDireccion({ ...direccion, rut: "" });
+    }
+    setUsarRutGenerico(!usarRutGenerico);
+  };
 
   const handleChangeDatosGenerales = (event) => {
     setDatosGenerales({
@@ -156,9 +168,26 @@ const Formulario = () => {
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <TextField
-                label="Código Postal"
-                name="cp"
-                value={direccion.cp}
+                label="RUT *"
+                name="rut"
+                value={usarRutGenerico ? "99.999.999-K" : direccion.rut}
+                sx={inputSX}
+                onChange={handleChangeDireccion}
+                fullWidth
+              />
+              <div>
+                <Checkbox
+                  checked={usarRutGenerico}
+                  onChange={handleUsarRutGenerico}
+                />
+                Usar RUT Genérico
+              </div>
+            </Grid>
+            <Grid item xs={6}>
+              <TextField
+                label="Region"
+                name="region"
+                value={direccion.region}
                 sx={inputSX}
                 onChange={handleChangeDireccion}
                 fullWidth
@@ -166,9 +195,9 @@ const Formulario = () => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Calle"
-                name="calle"
-                value={direccion.calle}
+                label="Comuna"
+                name="comuna"
+                value={direccion.comuna}
                 sx={inputSX}
                 onChange={handleChangeDireccion}
                 fullWidth
@@ -176,65 +205,18 @@ const Formulario = () => {
             </Grid>
             <Grid item xs={6}>
               <TextField
-                label="Ciudad"
-                name="ciudad"
-                value={direccion.ciudad}
+                label="Avenida y Calle"
+                name="avca"
+                value={direccion.avca}
                 sx={inputSX}
                 onChange={handleChangeDireccion}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Estado"
-                name="estado"
-                value={direccion.estado}
-                sx={inputSX}
-                onChange={handleChangeDireccion}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Municipio"
-                name="municipio"
-                value={direccion.municipio}
-                sx={inputSX}
-                onChange={handleChangeDireccion}
-                fullWidth
-              />
-            </Grid>
-            <Grid item xs={6}>
-              <TextField
-                label="Colonia"
-                name="colonia"
-                value={direccion.colonia}
-                sx={inputSX}
-                onChange={handleChangeDireccion}
-                fullWidth
-              />
-            </Grid>
-          </Grid>
-        </AccordionDetails>
-      </Accordion>{" "}
-      <Accordion>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="h6">¿Cuentas Con Id?</Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                label="Nombre"
-                name="nombre"
-                value={datosGenerales.nombre}
-                onChange={handleChangeDatosGenerales}
                 fullWidth
               />
             </Grid>
           </Grid>
         </AccordionDetails>
       </Accordion>
+
       <Box
         sx={{ marginTop: "20px", display: "flex", justifyContent: "center" }}
       >
@@ -245,10 +227,17 @@ const Formulario = () => {
             backgroundColor: "#001952",
             "&:hover": { backgroundColor: "#001952" },
           }}
+          onClick={() => {
+            setSnack(true);
+            setTimeout(() => {
+              setSnack(false);
+            }, 2000);
+          }}
         >
           Guardar
         </Button>
       </Box>
+      <Snack snack={snack} />
     </Box>
   );
 };
